@@ -36757,16 +36757,23 @@ var _user$project$Main$areaData = {
 				_1: {
 					ctor: '::',
 					_0: {
-						x: 8,
-						y: _elm_lang$core$Maybe$Just(7.4)
+						x: 7.2,
+						y: _elm_lang$core$Maybe$Just(6.4)
 					},
 					_1: {
 						ctor: '::',
 						_0: {
-							x: 10,
-							y: _elm_lang$core$Maybe$Just(5.3)
+							x: 8,
+							y: _elm_lang$core$Maybe$Just(7.4)
 						},
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: {
+								x: 10,
+								y: _elm_lang$core$Maybe$Just(5.3)
+							},
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -36816,36 +36823,84 @@ var _user$project$Main$areaEncoding = function (behaviour) {
 			A3(_elm_lang$core$Color$rgb, 255, 127, 14),
 			A4(_user$project$Facet_Encoding$hArea, _user$project$Main$areaX, _user$project$Main$areaY, _enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Interpolate$Monotone, behaviour)));
 };
-var _user$project$Main$areaBase = A2(
-	_user$project$Facet_Plot$height,
-	600,
+var _user$project$Main$areaPoint = A2(
+	_user$project$Facet_Encoding$fillConstant,
+	_elm_lang$core$Color$black,
 	A2(
-		_user$project$Facet_Plot$width,
-		768,
+		_user$project$Facet_Encoding$sizeConstant,
+		25,
 		A2(
-			_user$project$Facet_Plot$yAxis,
-			A2(
-				_user$project$Facet_Axis$continuousDomain,
-				{ctor: '_Tuple2', _0: 0, _1: 8},
-				_user$project$Facet_Axis$linearY(
-					_elm_lang$core$Maybe$Just('y'))),
-			A2(
-				_user$project$Facet_Plot$xAxis,
+			_user$project$Facet_Encoding$point,
+			_user$project$Facet_Channel$positional(
 				A2(
-					_user$project$Facet_Axis$continuousDomain,
-					{ctor: '_Tuple2', _0: 0, _1: 11},
-					_user$project$Facet_Axis$linearX(
-						_elm_lang$core$Maybe$Just('x'))),
-				_user$project$Facet_Plot$plot(
-					_elm_lang$core$Maybe$Just('An area chart with `BeginNew` behaviour'))))));
-var _user$project$Main$areaBeginNew = A2(
-	_user$project$Facet_Plot$layer,
-	_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$BeginNew),
-	_user$project$Main$areaBase);
+					_user$project$Facet_Field$scalar,
+					_elm_lang$core$Maybe$Just('x'),
+					function (_) {
+						return _.x;
+					})),
+			_user$project$Facet_Channel$positional(
+				A2(
+					_user$project$Facet_Field$maybeScalar,
+					_elm_lang$core$Maybe$Just('y'),
+					function (_) {
+						return _.y;
+					})))));
 var _user$project$Main$areaSkipMissing = A2(
 	_user$project$Facet_Plot$layer,
-	_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$SkipMissing),
-	_user$project$Main$areaBase);
+	_user$project$Main$areaPoint,
+	A2(
+		_user$project$Facet_Plot$layer,
+		_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$SkipMissing),
+		A2(
+			_user$project$Facet_Plot$height,
+			600,
+			A2(
+				_user$project$Facet_Plot$width,
+				768,
+				A2(
+					_user$project$Facet_Plot$yAxis,
+					A2(
+						_user$project$Facet_Axis$continuousDomain,
+						{ctor: '_Tuple2', _0: 0, _1: 8},
+						_user$project$Facet_Axis$linearY(
+							_elm_lang$core$Maybe$Just('y'))),
+					A2(
+						_user$project$Facet_Plot$xAxis,
+						A2(
+							_user$project$Facet_Axis$continuousDomain,
+							{ctor: '_Tuple2', _0: 0, _1: 11},
+							_user$project$Facet_Axis$linearX(
+								_elm_lang$core$Maybe$Just('x'))),
+						_user$project$Facet_Plot$plot(
+							_elm_lang$core$Maybe$Just('An area chart with `SkipMissing` behaviour'))))))));
+var _user$project$Main$areaBeginNew = A2(
+	_user$project$Facet_Plot$layer,
+	_user$project$Main$areaPoint,
+	A2(
+		_user$project$Facet_Plot$layer,
+		_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$BeginNew),
+		A2(
+			_user$project$Facet_Plot$height,
+			600,
+			A2(
+				_user$project$Facet_Plot$width,
+				768,
+				A2(
+					_user$project$Facet_Plot$yAxis,
+					A2(
+						_user$project$Facet_Axis$continuousDomain,
+						{ctor: '_Tuple2', _0: 0, _1: 8},
+						_user$project$Facet_Axis$linearY(
+							_elm_lang$core$Maybe$Just('y'))),
+					A2(
+						_user$project$Facet_Plot$xAxis,
+						A2(
+							_user$project$Facet_Axis$continuousDomain,
+							{ctor: '_Tuple2', _0: 0, _1: 11},
+							_user$project$Facet_Axis$linearX(
+								_elm_lang$core$Maybe$Just('x'))),
+						_user$project$Facet_Plot$plot(
+							_elm_lang$core$Maybe$Just('An area chart with `BeginNew` behaviour'))))))));
 var _user$project$Main$step = (2 * _elm_lang$core$Basics$pi) / 50.0;
 var _user$project$Main$marks = 51;
 var _user$project$Main$lineData = A2(
@@ -38012,7 +38067,7 @@ var _user$project$Main$update = F2(
 						_0: {
 							ctor: '_Tuple2',
 							_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlotFacetted),
-							_1: 'The same plot faceted by origin and number of cylenders.'
+							_1: 'The same plot faceted by origin and number of cylinders.'
 						},
 						_1: {
 							ctor: '::',
@@ -38026,14 +38081,14 @@ var _user$project$Main$update = F2(
 								_0: {
 									ctor: '_Tuple2',
 									_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotRow),
-									_1: 'The same bar plot faceted as a row.'
+									_1: 'The same bar plot faceted by number of cylinders as a row.'
 								},
 								_1: {
 									ctor: '::',
 									_0: {
 										ctor: '_Tuple2',
 										_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotColumn),
-										_1: 'The same bar plot again now faceted as a column.'
+										_1: 'The same bar plot again now faceted by number of cylinders as a column.'
 									},
 									_1: {ctor: '[]'}
 								}

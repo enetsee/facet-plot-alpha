@@ -163,10 +163,10 @@ update msg model =
                 carScenegraphs =
                     [ ( compileWith cars scatterPlot, "A simple scatter plot" )
                     , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and left." )
-                    , ( compileWith cars scatterPlotFacetted, "The same plot faceted by origin and number of cylenders." )
+                    , ( compileWith cars scatterPlotFacetted, "The same plot faceted by origin and number of cylinders." )
                     , ( compileWith cars barPlot, "A bar plot using an `AggregateField` to find the average miles per gallon." )
-                    , ( compileWith cars barPlotRow, "The same bar plot faceted as a row." )
-                    , ( compileWith cars barPlotColumn, "The same bar plot again now faceted as a column." )
+                    , ( compileWith cars barPlotRow, "The same bar plot faceted by number of cylinders as a row." )
+                    , ( compileWith cars barPlotColumn, "The same bar plot again now faceted by number of cylinders as a column." )
                     ]
 
                 birdstrikesScenegraphs =
@@ -635,25 +635,35 @@ step =
 -- Area ------------------------------------------------------------------------
 
 
-areaBase : Plot data Float Float facetRow facetColumn
-areaBase =
+areaBeginNew : Plot { a | y : Maybe Float, x : Float } Float Float facetRow facetColumn
+areaBeginNew =
     Plot.plot (Just "An area chart with `BeginNew` behaviour")
         |> Plot.xAxis (Axis.linearX (Just "x") |> Axis.continuousDomain ( 0, 11 ))
         |> Plot.yAxis (Axis.linearY (Just "y") |> Axis.continuousDomain ( 0, 8 ))
         |> Plot.width 768
         |> Plot.height 600
-
-
-areaBeginNew : Plot { a | y : Maybe Float, x : Float } Float Float facetRow facetColumn
-areaBeginNew =
-    areaBase
         |> Plot.layer (areaEncoding BeginNew)
+        |> Plot.layer areaPoint
 
 
 areaSkipMissing : Plot { a | y : Maybe Float, x : Float } Float Float facetRow facetColumn
 areaSkipMissing =
-    areaBase
+    Plot.plot (Just "An area chart with `SkipMissing` behaviour")
+        |> Plot.xAxis (Axis.linearX (Just "x") |> Axis.continuousDomain ( 0, 11 ))
+        |> Plot.yAxis (Axis.linearY (Just "y") |> Axis.continuousDomain ( 0, 8 ))
+        |> Plot.width 768
+        |> Plot.height 600
         |> Plot.layer (areaEncoding SkipMissing)
+        |> Plot.layer areaPoint
+
+
+areaPoint : Encoding.Encoding { a | x : comparable, y : Maybe comparable1 } comparable comparable1
+areaPoint =
+    Encoding.point
+        (Field.scalar (Just "x") .x |> Channel.positional)
+        (Field.maybeScalar (Just "y") .y |> Channel.positional)
+        |> Encoding.sizeConstant 25
+        |> Encoding.fillConstant Color.black
 
 
 areaEncoding : Behaviour -> Encoding.Encoding { a | y : Maybe number, x : comparable } comparable number
@@ -681,6 +691,7 @@ areaData =
     , { x = 3, y = Just 5 }
     , { x = 4.5, y = Just 4.8 }
     , { x = 5.5, y = Nothing }
+    , { x = 7.2, y = Just 6.4 }
     , { x = 8, y = Just 7.4 }
     , { x = 10, y = Just 5.3 }
     ]
