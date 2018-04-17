@@ -162,7 +162,7 @@ update msg model =
             let
                 carScenegraphs =
                     [ ( compileWith cars scatterPlot, "A simple scatter plot" )
-                    , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and left." )
+                    , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and right. Note that the facet labels orient themselves to avoid the axes." )
                     , ( compileWith cars scatterPlotFacetted, "The same plot faceted by origin and number of cylinders." )
                     , ( compileWith cars barPlot, "A bar plot using an `AggregateField` to find the average miles per gallon." )
                     , ( compileWith cars barPlotRow, "The same bar plot faceted by number of cylinders as a row." )
@@ -544,7 +544,7 @@ trailData =
     [ { x = 2, y = 2, w = Just 4 }
     , { x = 4, y = 2, w = Just 6 }
     , { x = 7.4, y = 4.5, w = Just 8 }
-    , { x = 8.6, y = 4.0, w = Just 6.5 }
+    , { x = 8.6, y = 4.0, w = Just 11.5 }
     , { x = 10, y = 6.0, w = Just 3 }
     ]
 
@@ -649,6 +649,7 @@ areaBeginNew =
         |> Plot.width 768
         |> Plot.height 600
         |> Plot.layer (areaEncoding BeginNew)
+        |> Plot.layer (areaLine BeginNew)
         |> Plot.layer areaPoint
 
 
@@ -660,10 +661,11 @@ areaSkipMissing =
         |> Plot.width 768
         |> Plot.height 600
         |> Plot.layer (areaEncoding SkipMissing)
+        |> Plot.layer (areaLine SkipMissing)
         |> Plot.layer areaPoint
 
 
-areaPoint : Encoding.Encoding { a | x : comparable, y : Maybe comparable1 } comparable comparable1
+areaPoint : Encoding { a | x : comparable, y : Maybe comparable1 } comparable comparable1
 areaPoint =
     Encoding.point
         (Field.scalar (Just "x") .x |> Channel.positional)
@@ -672,7 +674,14 @@ areaPoint =
         |> Encoding.fillConstant Color.black
 
 
-areaEncoding : Behaviour -> Encoding.Encoding { a | y : Maybe number, x : comparable } comparable number
+areaLine : Behaviour -> Encoding { a | y : Maybe comparable1, x : comparable } comparable comparable1
+areaLine behaviour =
+    Encoding.line areaX areaY Monotone behaviour
+        |> Encoding.strokeConstant (Color.rgb 255 127 14)
+        |> Encoding.strokeWidthConstant 2
+
+
+areaEncoding : Behaviour -> Encoding { a | y : Maybe number, x : comparable } comparable number
 areaEncoding behaviour =
     Encoding.hArea areaX areaY Monotone behaviour
         |> Encoding.fillConstant (Color.rgb 255 127 14)
