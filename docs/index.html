@@ -26164,7 +26164,7 @@ var _user$project$Data_Birdstrikes$birdstrikes = function (_p14) {
 	return _elm_lang$http$Http$toTask(
 		A2(
 			_elm_lang$http$Http$get,
-			'/data/birdstrikes.json',
+			'https://github.com/enetsee/facet-plot-alpha/examples/data/birdstrikes.json',
 			_elm_lang$core$Json_Decode$list(_user$project$Data_Birdstrikes$decode)));
 };
 var _user$project$Data_Cars$decodeDate = A2(
@@ -26224,7 +26224,7 @@ var _user$project$Data_Cars$cars = function (_p1) {
 	return _elm_lang$http$Http$toTask(
 		A2(
 			_elm_lang$http$Http$get,
-			'http://localhost:8000/data/cars.json',
+			'https://github.com/enetsee/facet-plot-alpha/examples/data/cars.json',
 			_elm_lang$core$Json_Decode$list(_user$project$Data_Cars$decode)));
 };
 var _user$project$Facet_Maybe_Extra$maybeLazy = F3(
@@ -37524,106 +37524,129 @@ var _user$project$Main$wrapperStyles = {
 };
 var _user$project$Main$view = function (model) {
 	var content = function () {
-		var _p8 = model.error;
-		if (_p8.ctor === 'Just') {
-			return {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(_p8._0),
-				_1: {ctor: '[]'}
-			};
-		} else {
-			var otherPlots = A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Maybe$map(
-						A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
-					model.otherScenegraphs));
-			var birdStrikePlots = A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Maybe$map(
-						A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
-					model.birdstrikesScenegraphs));
-			var carPlots = A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Maybe$map(
-						A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
-					model.carScenegraphs));
-			return {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h1,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('Car data'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
-							_1: {ctor: '[]'}
-						},
-						carPlots),
-					_1: {
+		var _p8 = {ctor: '_Tuple2', _0: model.state, _1: model.error};
+		_v3_2:
+		do {
+			if (_p8.ctor === '_Tuple2') {
+				if (_p8._0.ctor === 'Loading') {
+					return {
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$h1,
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Birdstrike data'),
+								_0: _elm_lang$html$Html$text('Loading'),
 								_1: {ctor: '[]'}
 							}),
+						_1: {ctor: '[]'}
+					};
+				} else {
+					if (_p8._1.ctor === 'Just') {
+						return {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p8._1._0),
+							_1: {ctor: '[]'}
+						};
+					} else {
+						break _v3_2;
+					}
+				}
+			} else {
+				break _v3_2;
+			}
+		} while(false);
+		var otherPlots = A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$map(
+					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				model.otherScenegraphs));
+		var birdStrikePlots = A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$map(
+					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				model.birdstrikesScenegraphs));
+		var carPlots = A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$map(
+					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				model.carScenegraphs));
+		return {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Car data'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
+						_1: {ctor: '[]'}
+					},
+					carPlots),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$h1,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Birdstrike data'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
+								_1: {ctor: '[]'}
+							},
+							birdStrikePlots),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$div,
+								_elm_lang$html$Html$h1,
+								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
+									_0: _elm_lang$html$Html$text('Other examples'),
 									_1: {ctor: '[]'}
-								},
-								birdStrikePlots),
+								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$h1,
-									{ctor: '[]'},
+									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Other examples'),
+										_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
 										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$plotStyles),
-											_1: {ctor: '[]'}
-										},
-										otherPlots),
-									_1: {ctor: '[]'}
-								}
+									},
+									otherPlots),
+								_1: {ctor: '[]'}
 							}
 						}
 					}
 				}
-			};
-		}
+			}
+		};
 	}();
 	return A2(
 		_elm_lang$html$Html$div,
@@ -37659,18 +37682,10 @@ var _user$project$Main$loadData = A2(
 	},
 	_user$project$Data_Cars$cars(
 		{ctor: '_Tuple0'}));
-var _user$project$Main$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {cars: a, birdstrikes: b, error: c, carScenegraphs: d, birdstrikesScenegraphs: e, otherScenegraphs: f};
+var _user$project$Main$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {state: a, cars: b, birdstrikes: c, error: d, carScenegraphs: e, birdstrikesScenegraphs: f, otherScenegraphs: g};
 	});
-var _user$project$Main$initialModel = A6(
-	_user$project$Main$Model,
-	{ctor: '[]'},
-	{ctor: '[]'},
-	_elm_lang$core$Maybe$Nothing,
-	{ctor: '[]'},
-	{ctor: '[]'},
-	{ctor: '[]'});
 var _user$project$Main$VectorFieldData = F4(
 	function (a, b, c, d) {
 		return {x: a, y: b, magnitude: c, direction: d};
@@ -37700,6 +37715,7 @@ var _user$project$Main$vectorFieldData = A2(
 			A2(_elm_lang$core$List$range, -6, 6));
 	},
 	A2(_elm_lang$core$List$range, -6, 6));
+var _user$project$Main$Loaded = {ctor: 'Loaded'};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p10 = msg;
@@ -37709,6 +37725,7 @@ var _user$project$Main$update = F2(
 				_0: _elm_lang$core$Native_Utils.update(
 					model,
 					{
+						state: _user$project$Main$Loaded,
 						error: _elm_lang$core$Maybe$Just(
 							_elm_lang$core$Basics$toString(_p10._0._0))
 					}),
@@ -37764,11 +37781,21 @@ var _user$project$Main$update = F2(
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
 					model,
-					{cars: _p12, birdstrikes: _p11, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
+					{state: _user$project$Main$Loaded, cars: _p12, birdstrikes: _p11, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		}
 	});
+var _user$project$Main$Loading = {ctor: 'Loading'};
+var _user$project$Main$initialModel = A7(
+	_user$project$Main$Model,
+	_user$project$Main$Loading,
+	{ctor: '[]'},
+	{ctor: '[]'},
+	_elm_lang$core$Maybe$Nothing,
+	{ctor: '[]'},
+	{ctor: '[]'},
+	{ctor: '[]'});
 var _user$project$Main$LoadData = function (a) {
 	return {ctor: 'LoadData', _0: a};
 };

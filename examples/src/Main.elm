@@ -47,8 +47,11 @@ view : Model -> Html msg
 view model =
     let
         content =
-            case model.error of
-                Just err ->
+            case ( model.state, model.error ) of
+                ( Loading, _ ) ->
+                    [ Html.h1 [] [ Html.text "Loading" ] ]
+
+                ( Loaded, Just err ) ->
                     [ Html.text err ]
 
                 _ ->
@@ -110,7 +113,8 @@ plotStyles =
 
 
 type alias Model =
-    { cars : List Car
+    { state : State
+    , cars : List Car
     , birdstrikes : List Birdstrike
     , error : Maybe String
     , carScenegraphs : List (Maybe ( ViewBox, Scenegraph ))
@@ -121,7 +125,12 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    Model [] [] Nothing [] [] []
+    Model Loading [] [] Nothing [] [] []
+
+
+type State
+    = Loading
+    | Loaded
 
 
 type Msg
@@ -132,7 +141,7 @@ update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         LoadData (Err err) ->
-            ( { model | error = Just <| toString err }, Cmd.none )
+            ( { model | state = Loaded, error = Just <| toString err }, Cmd.none )
 
         LoadData (Ok ( cars, birdstrikes )) ->
             let
@@ -155,7 +164,8 @@ update msg model =
                     ]
             in
                 ( { model
-                    | cars = cars
+                    | state = Loaded
+                    , cars = cars
                     , birdstrikes = birdstrikes
                     , error = Nothing
                     , carScenegraphs = carScenegraphs
