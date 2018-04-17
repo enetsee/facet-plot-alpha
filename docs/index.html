@@ -37306,11 +37306,11 @@ var _user$project$Main$vectorFieldPlot = A2(
 					_user$project$Facet_Plot$plot(
 						_elm_lang$core$Maybe$Just('A portion of the vector field for F(-y,x)')))))));
 var _user$project$Main$twoDecimalPlaces = function (number) {
-	return A3(
-		_elm_lang$core$String$slice,
-		0,
-		5,
-		_elm_lang$core$Basics$toString(number));
+	return function (x) {
+		return _elm_lang$core$Basics$toString(x / 100);
+	}(
+		_elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Basics$floor(number * 100)));
 };
 var _user$project$Main$formatMoney = function (value) {
 	var pow = _elm_lang$core$Basics$floor(
@@ -37441,6 +37441,19 @@ var _user$project$Main$averageMilesPerGallon = function (cars) {
 			sum / _elm_lang$core$Basics$toFloat(n));
 	}
 };
+var _user$project$Main$sizeAcceleration = A3(
+	_user$project$Facet_Channel$float,
+	_user$project$Main$twoDecimalPlaces,
+	A2(
+		_user$project$Facet_Scale$linear,
+		{ctor: '_Tuple2', _0: 10, _1: 30},
+		{ctor: '_Tuple2', _0: 10, _1: 400}),
+	A2(
+		_user$project$Facet_Field$scalar,
+		_elm_lang$core$Maybe$Just('acceleration'),
+		function (_) {
+			return _.acceleration;
+		}));
 var _user$project$Main$angle = 0;
 var _user$project$Main$toShortCountry = function (str) {
 	return _elm_lang$core$Native_Utils.eq(str, 'Europe') ? 'EUR' : (_elm_lang$core$Native_Utils.eq(str, 'Japan') ? 'JPN' : str);
@@ -37468,6 +37481,73 @@ var _user$project$Main$fillColorOrigin = A3(
 		function (_) {
 			return _.origin;
 		}));
+var _user$project$Main$carPoint2 = A2(
+	_user$project$Facet_Encoding$size,
+	_user$project$Main$sizeAcceleration,
+	A2(
+		_user$project$Facet_Encoding$fillOpacityConstant,
+		0.5,
+		A2(
+			_user$project$Facet_Encoding$fill,
+			_user$project$Main$fillColorOrigin,
+			A2(
+				_user$project$Facet_Encoding$point,
+				_user$project$Facet_Channel$positional(
+					A2(
+						_user$project$Facet_Field$maybeScalar,
+						_elm_lang$core$Maybe$Just('horsepower'),
+						function (_p10) {
+							return A2(
+								_elm_lang$core$Maybe$map,
+								_elm_lang$core$Basics$toFloat,
+								function (_) {
+									return _.horsepower;
+								}(_p10));
+						})),
+				_user$project$Facet_Channel$positional(
+					A2(
+						_user$project$Facet_Field$maybeScalar,
+						_elm_lang$core$Maybe$Just('miles per gallon'),
+						function (_) {
+							return _.milesPerGallon;
+						}))))));
+var _user$project$Main$scatterPlot2 = A2(
+	_user$project$Facet_Plot$layer,
+	_user$project$Main$carPoint2,
+	A2(
+		_user$project$Facet_Plot$height,
+		600,
+		A2(
+			_user$project$Facet_Plot$width,
+			768,
+			A2(
+				_user$project$Facet_Plot$yAxis,
+				A2(
+					_user$project$Facet_Axis$labelAngle,
+					_user$project$Main$angle,
+					A2(
+						_user$project$Facet_Axis$continuousDomain,
+						{ctor: '_Tuple2', _0: 0, _1: 50},
+						A2(
+							_user$project$Facet_Axis$ticks,
+							5,
+							_user$project$Facet_Axis$linearY(
+								_elm_lang$core$Maybe$Just('miles per gallon'))))),
+				A2(
+					_user$project$Facet_Plot$xAxis,
+					A2(
+						_user$project$Facet_Axis$labelAngle,
+						_user$project$Main$angle,
+						A2(
+							_user$project$Facet_Axis$continuousDomain,
+							{ctor: '_Tuple2', _0: 0, _1: 240},
+							A2(
+								_user$project$Facet_Axis$ticks,
+								8,
+								_user$project$Facet_Axis$linearX(
+									_elm_lang$core$Maybe$Just('horsepower'))))),
+					_user$project$Facet_Plot$plot(
+						_elm_lang$core$Maybe$Just('Horsepower vs. Miles per Gallon')))))));
 var _user$project$Main$bar = A2(
 	_user$project$Facet_Encoding$fill,
 	_user$project$Main$fillColorOrigin,
@@ -37710,11 +37790,11 @@ var _user$project$Main$wrapperStyles = {
 };
 var _user$project$Main$view = function (model) {
 	var content = function () {
-		var _p10 = {ctor: '_Tuple2', _0: model.state, _1: model.error};
+		var _p11 = {ctor: '_Tuple2', _0: model.state, _1: model.error};
 		_v3_2:
 		do {
-			if (_p10.ctor === '_Tuple2') {
-				if (_p10._0.ctor === 'Loading') {
+			if (_p11.ctor === '_Tuple2') {
+				if (_p11._0.ctor === 'Loading') {
 					return {
 						ctor: '::',
 						_0: A2(
@@ -37728,10 +37808,10 @@ var _user$project$Main$view = function (model) {
 						_1: {ctor: '[]'}
 					};
 				} else {
-					if (_p10._1.ctor === 'Just') {
+					if (_p11._1.ctor === 'Just') {
 						return {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p10._1._0),
+							_0: _elm_lang$html$Html$text(_p11._1._0),
 							_1: {ctor: '[]'}
 						};
 					} else {
@@ -37747,8 +37827,8 @@ var _user$project$Main$view = function (model) {
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				function (_p11) {
-					var _p12 = _p11;
+				function (_p12) {
+					var _p13 = _p12;
 					return A2(
 						_elm_lang$core$Maybe$map,
 						function (plot) {
@@ -37768,7 +37848,7 @@ var _user$project$Main$view = function (model) {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text(_p12._1),
+												_0: _elm_lang$html$Html$text(_p13._1),
 												_1: {ctor: '[]'}
 											}),
 										_1: {
@@ -37779,7 +37859,7 @@ var _user$project$Main$view = function (model) {
 									}
 								});
 						},
-						_p12._0);
+						_p13._0);
 				},
 				model.otherScenegraphs));
 		var birdStrikePlots = A2(
@@ -37787,8 +37867,8 @@ var _user$project$Main$view = function (model) {
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				function (_p13) {
-					var _p14 = _p13;
+				function (_p14) {
+					var _p15 = _p14;
 					return A2(
 						_elm_lang$core$Maybe$map,
 						function (plot) {
@@ -37808,7 +37888,7 @@ var _user$project$Main$view = function (model) {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text(_p14._1),
+												_0: _elm_lang$html$Html$text(_p15._1),
 												_1: {ctor: '[]'}
 											}),
 										_1: {
@@ -37819,7 +37899,7 @@ var _user$project$Main$view = function (model) {
 									}
 								});
 						},
-						_p14._0);
+						_p15._0);
 				},
 				model.birdstrikesScenegraphs));
 		var carPlots = A2(
@@ -37827,8 +37907,8 @@ var _user$project$Main$view = function (model) {
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				function (_p15) {
-					var _p16 = _p15;
+				function (_p16) {
+					var _p17 = _p16;
 					return A2(
 						_elm_lang$core$Maybe$map,
 						function (plot) {
@@ -37848,7 +37928,7 @@ var _user$project$Main$view = function (model) {
 											{ctor: '[]'},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text(_p16._1),
+												_0: _elm_lang$html$Html$text(_p17._1),
 												_1: {ctor: '[]'}
 											}),
 										_1: {
@@ -37859,7 +37939,7 @@ var _user$project$Main$view = function (model) {
 									}
 								});
 						},
-						_p16._0);
+						_p17._0);
 				},
 				model.carScenegraphs));
 		return {
@@ -37974,13 +38054,13 @@ var _user$project$Main$VectorFieldData = F4(
 	});
 var _user$project$Main$vectorFromPos = F2(
 	function (xIn, yIn) {
-		var _p17 = {
+		var _p18 = {
 			ctor: '_Tuple2',
 			_0: _elm_lang$core$Basics$toFloat(0 - yIn),
 			_1: _elm_lang$core$Basics$toFloat(xIn)
 		};
-		var x = _p17._0;
-		var y = _p17._1;
+		var x = _p18._0;
+		var y = _p18._1;
 		var magnitude = _elm_lang$core$Basics$sqrt((x * x) + (y * y));
 		var direction = _user$project$Main$norm(
 			A2(_elm_lang$core$Basics$atan2, 0 - y, x));
@@ -38000,8 +38080,8 @@ var _user$project$Main$vectorFieldData = A2(
 var _user$project$Main$Loaded = {ctor: 'Loaded'};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p18 = msg;
-		if (_p18._0.ctor === 'Err') {
+		var _p19 = msg;
+		if (_p19._0.ctor === 'Err') {
 			return {
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
@@ -38009,13 +38089,13 @@ var _user$project$Main$update = F2(
 					{
 						state: _user$project$Main$Loaded,
 						error: _elm_lang$core$Maybe$Just(
-							_elm_lang$core$Basics$toString(_p18._0._0))
+							_elm_lang$core$Basics$toString(_p19._0._0))
 					}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		} else {
-			var _p20 = _p18._0._0._0;
-			var _p19 = _p18._0._0._1;
+			var _p21 = _p19._0._0._0;
+			var _p20 = _p19._0._0._1;
 			var otherScenegraphs = {
 				ctor: '::',
 				_0: {
@@ -38061,7 +38141,7 @@ var _user$project$Main$update = F2(
 				ctor: '::',
 				_0: {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$Main$compileWith, _p19, _user$project$Main$birdBarPlot),
+					_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$birdBarPlot),
 					_1: 'A bar plot with a square root scale to show skewed data.'
 				},
 				_1: {ctor: '[]'}
@@ -38070,45 +38150,53 @@ var _user$project$Main$update = F2(
 				ctor: '::',
 				_0: {
 					ctor: '_Tuple2',
-					_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlot),
+					_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$scatterPlot),
 					_1: 'A simple scatter plot'
 				},
 				_1: {
 					ctor: '::',
 					_0: {
 						ctor: '_Tuple2',
-						_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlotReversed),
-						_1: 'The same plot with the axes oriented on the top and right. Note that the facet labels orient themselves to avoid the axes.'
+						_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$scatterPlotReversed),
+						_1: 'The same plot with the axes oriented on the top and right. Note that when faceting the labels will orient themselves to avoid the axes wherever you choose to place them.'
 					},
 					_1: {
 						ctor: '::',
 						_0: {
 							ctor: '_Tuple2',
-							_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlotFacetted),
+							_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$scatterPlotFacetted),
 							_1: 'The same plot faceted by origin and number of cylinders.'
 						},
 						_1: {
 							ctor: '::',
 							_0: {
 								ctor: '_Tuple2',
-								_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlot),
-								_1: 'A bar plot using an `AggregateField` to find the average miles per gallon.'
+								_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$scatterPlot2),
+								_1: 'A scatter plot with acceleration encoded as the size of the mark.'
 							},
 							_1: {
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
-									_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotRow),
-									_1: 'The same bar plot faceted by number of cylinders as a row.'
+									_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$barPlot),
+									_1: 'A bar plot using an `AggregateField` to find the average miles per gallon.'
 								},
 								_1: {
 									ctor: '::',
 									_0: {
 										ctor: '_Tuple2',
-										_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotColumn),
-										_1: 'The same bar plot again now faceted by number of cylinders as a column.'
+										_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$barPlotRow),
+										_1: 'The same bar plot faceted by number of cylinders as a row.'
 									},
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: A2(_user$project$Main$compileWith, _p21, _user$project$Main$barPlotColumn),
+											_1: 'The same bar plot again now faceted by number of cylinders as a column.'
+										},
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -38119,7 +38207,7 @@ var _user$project$Main$update = F2(
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
 					model,
-					{state: _user$project$Main$Loaded, cars: _p20, birdstrikes: _p19, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
+					{state: _user$project$Main$Loaded, cars: _p21, birdstrikes: _p20, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		}
@@ -38145,7 +38233,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 			_1: A2(_elm_lang$core$Task$attempt, _user$project$Main$LoadData, _user$project$Main$loadData)
 		},
 		update: _user$project$Main$update,
-		subscriptions: function (_p21) {
+		subscriptions: function (_p22) {
 			return _elm_lang$core$Platform_Sub$none;
 		},
 		view: _user$project$Main$view

@@ -162,8 +162,9 @@ update msg model =
             let
                 carScenegraphs =
                     [ ( compileWith cars scatterPlot, "A simple scatter plot" )
-                    , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and right. Note that the facet labels orient themselves to avoid the axes." )
+                    , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and right. Note that when faceting the labels will orient themselves to avoid the axes wherever you choose to place them." )
                     , ( compileWith cars scatterPlotFacetted, "The same plot faceted by origin and number of cylinders." )
+                    , ( compileWith cars scatterPlot2, "A scatter plot with acceleration encoded as the size of the mark." )
                     , ( compileWith cars barPlot, "A bar plot using an `AggregateField` to find the average miles per gallon." )
                     , ( compileWith cars barPlotRow, "The same bar plot faceted by number of cylinders as a row." )
                     , ( compileWith cars barPlotColumn, "The same bar plot again now faceted by number of cylinders as a column." )
@@ -264,6 +265,34 @@ toShortCountry str =
 angle : number
 angle =
     0
+
+
+{-| Another scatter plot with size encoding
+-}
+scatterPlot2 : Plot Car Float Float facetRow facetColumn
+scatterPlot2 =
+    Plot.plot (Just "Horsepower vs. Miles per Gallon")
+        |> Plot.xAxis (Axis.linearX (Just "horsepower") |> Axis.ticks 8 |> Axis.continuousDomain ( 0, 240 ) |> Axis.labelAngle angle)
+        |> Plot.yAxis (Axis.linearY (Just "miles per gallon") |> Axis.ticks 5 |> Axis.continuousDomain ( 0, 50 ) |> Axis.labelAngle angle)
+        |> Plot.width 768
+        |> Plot.height 600
+        |> Plot.layer carPoint2
+
+
+carPoint2 : Encoding Car Float Float
+carPoint2 =
+    Encoding.point
+        (Field.maybeScalar (Just "horsepower") (.horsepower >> Maybe.map toFloat) |> Channel.positional)
+        (Field.maybeScalar (Just "miles per gallon") .milesPerGallon |> Channel.positional)
+        |> Encoding.fill fillColorOrigin
+        |> Encoding.fillOpacityConstant 0.5
+        |> Encoding.size sizeAcceleration
+
+
+sizeAcceleration : Channel.FloatChannel { a | acceleration : Float }
+sizeAcceleration =
+    Field.scalar (Just "acceleration") .acceleration
+        |> Channel.float twoDecimalPlaces (Scale.linear ( 10, 30 ) ( 10, 400 ))
 
 
 {-| Bar plot of average miles per gallon by origin
@@ -375,10 +404,12 @@ formatMoney value =
             "$" ++ (twoDecimalPlaces (value / 10 ^ 12)) ++ "tn"
 
 
-twoDecimalPlaces : a -> String
+twoDecimalPlaces : Float -> String
 twoDecimalPlaces number =
-    toString number
-        |> String.slice 0 5
+    floor (number * 100)
+        |> toFloat
+        |> \x ->
+            toString (x / 100)
 
 
 
