@@ -58,17 +58,32 @@ view model =
                     let
                         carPlots =
                             model.carScenegraphs
-                                |> List.map (Maybe.map (render Nothing Nothing))
+                                |> List.map
+                                    (\( maybePlot, info ) ->
+                                        Maybe.map
+                                            (\plot -> Html.div [] [ Html.hr [] [], Html.p [] [ Html.text info ], render Nothing Nothing plot ])
+                                            maybePlot
+                                    )
                                 |> List.filterMap identity
 
                         birdStrikePlots =
                             model.birdstrikesScenegraphs
-                                |> List.map (Maybe.map (render Nothing Nothing))
+                                |> List.map
+                                    (\( maybePlot, info ) ->
+                                        Maybe.map
+                                            (\plot -> Html.div [] [ Html.hr [] [], Html.p [] [ Html.text info ], render Nothing Nothing plot ])
+                                            maybePlot
+                                    )
                                 |> List.filterMap identity
 
                         otherPlots =
                             model.otherScenegraphs
-                                |> List.map (Maybe.map (render Nothing Nothing))
+                                |> List.map
+                                    (\( maybePlot, info ) ->
+                                        Maybe.map
+                                            (\plot -> Html.div [] [ Html.hr [] [], Html.p [] [ Html.text info ], render Nothing Nothing plot ])
+                                            maybePlot
+                                    )
                                 |> List.filterMap identity
                     in
                         [ Html.h1 [] [ Html.text "Car data" ]
@@ -117,9 +132,9 @@ type alias Model =
     , cars : List Car
     , birdstrikes : List Birdstrike
     , error : Maybe String
-    , carScenegraphs : List (Maybe ( ViewBox, Scenegraph ))
-    , birdstrikesScenegraphs : List (Maybe ( ViewBox, Scenegraph ))
-    , otherScenegraphs : List (Maybe ( ViewBox, Scenegraph ))
+    , carScenegraphs : List ( Maybe ( ViewBox, Scenegraph ), String )
+    , birdstrikesScenegraphs : List ( Maybe ( ViewBox, Scenegraph ), String )
+    , otherScenegraphs : List ( Maybe ( ViewBox, Scenegraph ), String )
     }
 
 
@@ -146,21 +161,23 @@ update msg model =
         LoadData (Ok ( cars, birdstrikes )) ->
             let
                 carScenegraphs =
-                    [ compileWith cars scatterPlot
-                    , compileWith cars scatterPlotReversed
-                    , compileWith cars scatterPlotFacetted
-                    , compileWith cars barPlot
-                    , compileWith cars barPlotRow
-                    , compileWith cars barPlotColumn
+                    [ ( compileWith cars scatterPlot, "A simple scatter plot" )
+                    , ( compileWith cars scatterPlotReversed, "The same plot with the axes oriented on the top and left." )
+                    , ( compileWith cars scatterPlotFacetted, "The same plot faceted by origin and number of cylenders." )
+                    , ( compileWith cars barPlot, "A bar plot using an `AggregateField` to find the average miles per gallon." )
+                    , ( compileWith cars barPlotRow, "The same bar plot faceted as a row." )
+                    , ( compileWith cars barPlotColumn, "The same bar plot again now faceted as a column." )
                     ]
 
                 birdstrikesScenegraphs =
-                    [ compileWith birdstrikes birdBarPlot ]
+                    [ ( compileWith birdstrikes birdBarPlot, "A bar plot with a square root scale to show skewed data." ) ]
 
                 otherScenegraphs =
-                    [ compileWith vectorFieldData vectorFieldPlot
-                    , compileWith trailData trailPlot
-                    , compileWith lineData linePlot
+                    [ ( compileWith vectorFieldData vectorFieldPlot, "A symbol plot using the built-in arrow shape to represent a vector field. Note that all legends are generated from the plot declaration automatically." )
+                    , ( compileWith trailData trailPlot, "A trail plot doing nothing particularly interesting." )
+                    , ( compileWith lineData linePlot, "A line plot showing the different interpolation methods applied to the sin function." )
+                    , ( compileWith areaData areaBeginNew, "An area plot showing the `BeginNew` behaviour when missing data (encoded as `Maybe`) is encountered ." )
+                    , ( compileWith areaData areaSkipMissing, "The same area plot showing the `SkipMissing` behaviour when missing data (encoded as `Maybe`) is encountered ." )
                     ]
             in
                 ( { model
@@ -306,7 +323,7 @@ birdBarPlot : Plot Birdstrike String Float facetRow facetColumn
 birdBarPlot =
     Plot.plot (Just "Total cost by species")
         |> Plot.xAxis (Axis.customBandX (Just "Species") |> Axis.labelAngle (pi / 2) |> Axis.labelFormat (truncateString 8))
-        |> Plot.yAxis (Axis.sqrtY (Just "Total Cost") |> Axis.continuousDomain ( 0, 1.0e7 ) |> Axis.labelFormat formatMoney)
+        |> Plot.yAxis (Axis.sqrtY (Just "Total Cost") |> Axis.continuousDomain ( 0, 2.0e6 ) |> Axis.labelFormat formatMoney)
         |> Plot.width 768
         |> Plot.height 600
         |> Plot.layer birdBar
@@ -612,3 +629,58 @@ marks =
 step : Float
 step =
     (2 * pi) / 50.0
+
+
+
+-- Area ------------------------------------------------------------------------
+
+
+areaBase : Plot data Float Float facetRow facetColumn
+areaBase =
+    Plot.plot (Just "An area chart with `BeginNew` behaviour")
+        |> Plot.xAxis (Axis.linearX (Just "x") |> Axis.continuousDomain ( 0, 11 ))
+        |> Plot.yAxis (Axis.linearY (Just "y") |> Axis.continuousDomain ( 0, 8 ))
+        |> Plot.width 768
+        |> Plot.height 600
+
+
+areaBeginNew : Plot { a | y : Maybe Float, x : Float } Float Float facetRow facetColumn
+areaBeginNew =
+    areaBase
+        |> Plot.layer (areaEncoding BeginNew)
+
+
+areaSkipMissing : Plot { a | y : Maybe Float, x : Float } Float Float facetRow facetColumn
+areaSkipMissing =
+    areaBase
+        |> Plot.layer (areaEncoding SkipMissing)
+
+
+areaEncoding : Behaviour -> Encoding.Encoding { a | y : Maybe number, x : comparable } comparable number
+areaEncoding behaviour =
+    Encoding.hArea areaX areaY Monotone behaviour
+        |> Encoding.fillConstant (Color.rgb 255 127 14)
+        |> Encoding.fillOpacityConstant 0.7
+
+
+areaX : Channel.PositionalChannel { a | x : comparable } comparable
+areaX =
+    Field.vector (Just "x") (List.sortBy .x >> List.map .x)
+        |> Channel.positional
+
+
+areaY : Channel.PositionalChannel { a | x : comparable, y : Maybe comparableDomain } comparableDomain
+areaY =
+    Field.maybeVector (Just "y") (List.sortBy .x >> List.map .y)
+        |> Channel.positional
+
+
+areaData : List { x : Float, y : Maybe Float }
+areaData =
+    [ { x = 1, y = Just 2 }
+    , { x = 3, y = Just 5 }
+    , { x = 4.5, y = Just 4.8 }
+    , { x = 5.5, y = Nothing }
+    , { x = 8, y = Just 7.4 }
+    , { x = 10, y = Just 5.3 }
+    ]

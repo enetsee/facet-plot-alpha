@@ -36733,6 +36733,119 @@ var _user$project$Facet_Plot$compile = F2(
 	function (plot, data) {
 		return A3(_user$project$Facet_Plot$compileWithTheme, _enetsee$facet_theme_alpha$Facet_Theme$default, plot, data);
 	});
+var _user$project$Main$areaData = {
+	ctor: '::',
+	_0: {
+		x: 1,
+		y: _elm_lang$core$Maybe$Just(2)
+	},
+	_1: {
+		ctor: '::',
+		_0: {
+			x: 3,
+			y: _elm_lang$core$Maybe$Just(5)
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				x: 4.5,
+				y: _elm_lang$core$Maybe$Just(4.8)
+			},
+			_1: {
+				ctor: '::',
+				_0: {x: 5.5, y: _elm_lang$core$Maybe$Nothing},
+				_1: {
+					ctor: '::',
+					_0: {
+						x: 8,
+						y: _elm_lang$core$Maybe$Just(7.4)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							x: 10,
+							y: _elm_lang$core$Maybe$Just(5.3)
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
+	}
+};
+var _user$project$Main$areaY = _user$project$Facet_Channel$positional(
+	A2(
+		_user$project$Facet_Field$maybeVector,
+		_elm_lang$core$Maybe$Just('y'),
+		function (_p0) {
+			return A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.y;
+				},
+				A2(
+					_elm_lang$core$List$sortBy,
+					function (_) {
+						return _.x;
+					},
+					_p0));
+		}));
+var _user$project$Main$areaX = _user$project$Facet_Channel$positional(
+	A2(
+		_user$project$Facet_Field$vector,
+		_elm_lang$core$Maybe$Just('x'),
+		function (_p1) {
+			return A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.x;
+				},
+				A2(
+					_elm_lang$core$List$sortBy,
+					function (_) {
+						return _.x;
+					},
+					_p1));
+		}));
+var _user$project$Main$areaEncoding = function (behaviour) {
+	return A2(
+		_user$project$Facet_Encoding$fillOpacityConstant,
+		0.7,
+		A2(
+			_user$project$Facet_Encoding$fillConstant,
+			A3(_elm_lang$core$Color$rgb, 255, 127, 14),
+			A4(_user$project$Facet_Encoding$hArea, _user$project$Main$areaX, _user$project$Main$areaY, _enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Interpolate$Monotone, behaviour)));
+};
+var _user$project$Main$areaBase = A2(
+	_user$project$Facet_Plot$height,
+	600,
+	A2(
+		_user$project$Facet_Plot$width,
+		768,
+		A2(
+			_user$project$Facet_Plot$yAxis,
+			A2(
+				_user$project$Facet_Axis$continuousDomain,
+				{ctor: '_Tuple2', _0: 0, _1: 8},
+				_user$project$Facet_Axis$linearY(
+					_elm_lang$core$Maybe$Just('y'))),
+			A2(
+				_user$project$Facet_Plot$xAxis,
+				A2(
+					_user$project$Facet_Axis$continuousDomain,
+					{ctor: '_Tuple2', _0: 0, _1: 11},
+					_user$project$Facet_Axis$linearX(
+						_elm_lang$core$Maybe$Just('x'))),
+				_user$project$Facet_Plot$plot(
+					_elm_lang$core$Maybe$Just('An area chart with `BeginNew` behaviour'))))));
+var _user$project$Main$areaBeginNew = A2(
+	_user$project$Facet_Plot$layer,
+	_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$BeginNew),
+	_user$project$Main$areaBase);
+var _user$project$Main$areaSkipMissing = A2(
+	_user$project$Facet_Plot$layer,
+	_user$project$Main$areaEncoding(_enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$SkipMissing),
+	_user$project$Main$areaBase);
 var _user$project$Main$step = (2 * _elm_lang$core$Basics$pi) / 50.0;
 var _user$project$Main$marks = 51;
 var _user$project$Main$lineData = A2(
@@ -36767,21 +36880,21 @@ var _user$project$Main$lineY = _user$project$Facet_Channel$positional(
 	A2(
 		_user$project$Facet_Field$vector,
 		_elm_lang$core$Maybe$Just('sin x'),
-		function (_p0) {
+		function (_p2) {
 			return A2(
 				_elm_lang$core$List$map,
 				_elm_lang$core$Tuple$second,
-				A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, _p0));
+				A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, _p2));
 		}));
 var _user$project$Main$lineX = _user$project$Facet_Channel$positional(
 	A2(
 		_user$project$Facet_Field$vector,
 		_elm_lang$core$Maybe$Just('x'),
-		function (_p1) {
+		function (_p3) {
 			return A2(
 				_elm_lang$core$List$map,
 				_elm_lang$core$Tuple$first,
-				A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, _p1));
+				A2(_elm_lang$core$List$sortBy, _elm_lang$core$Tuple$first, _p3));
 		}));
 var _user$project$Main$methods = {
 	ctor: '::',
@@ -36866,15 +36979,15 @@ var _user$project$Main$methods = {
 };
 var _user$project$Main$lines = A2(
 	_elm_lang$core$List$map,
-	function (_p2) {
-		var _p3 = _p2;
+	function (_p4) {
+		var _p5 = _p4;
 		return A2(
 			_user$project$Facet_Encoding$strokeOpacityConstant,
 			0.5,
 			A2(
 				_user$project$Facet_Encoding$strokeConstant,
-				_p3._1,
-				A4(_user$project$Facet_Encoding$line, _user$project$Main$lineX, _user$project$Main$lineY, _p3._0, _enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$SkipMissing)));
+				_p5._1,
+				A4(_user$project$Facet_Encoding$line, _user$project$Main$lineX, _user$project$Main$lineY, _p5._0, _enetsee$facet_scenegraph_alpha$Facet_Scenegraph_Mark$SkipMissing)));
 	},
 	_user$project$Main$methods);
 var _user$project$Main$linePlot = function (plot) {
@@ -37215,7 +37328,7 @@ var _user$project$Main$birdBarPlot = A2(
 					_user$project$Main$formatMoney,
 					A2(
 						_user$project$Facet_Axis$continuousDomain,
-						{ctor: '_Tuple2', _0: 0, _1: 1.0e7},
+						{ctor: '_Tuple2', _0: 0, _1: 2000000.0},
 						_user$project$Facet_Axis$sqrtY(
 							_elm_lang$core$Maybe$Just('Total Cost')))),
 				A2(
@@ -37231,26 +37344,26 @@ var _user$project$Main$birdBarPlot = A2(
 					_user$project$Facet_Plot$plot(
 						_elm_lang$core$Maybe$Just('Total cost by species')))))));
 var _user$project$Main$averageMilesPerGallon = function (cars) {
-	var _p4 = A2(
+	var _p6 = A2(
 		_elm_lang$core$List$filterMap,
 		function (_) {
 			return _.milesPerGallon;
 		},
 		cars);
-	if (_p4.ctor === '[]') {
+	if (_p6.ctor === '[]') {
 		return _elm_lang$core$Maybe$Nothing;
 	} else {
-		var _p5 = A3(
+		var _p7 = A3(
 			_elm_lang$core$List$foldl,
 			F2(
-				function (mpg, _p6) {
-					var _p7 = _p6;
-					return {ctor: '_Tuple2', _0: _p7._0 + 1, _1: _p7._1 + mpg};
+				function (mpg, _p8) {
+					var _p9 = _p8;
+					return {ctor: '_Tuple2', _0: _p9._0 + 1, _1: _p9._1 + mpg};
 				}),
 			{ctor: '_Tuple2', _0: 0, _1: 0.0},
-			_p4);
-		var n = _p5._0;
-		var sum = _p5._1;
+			_p6);
+		var n = _p7._0;
+		var sum = _p7._1;
 		return _elm_lang$core$Maybe$Just(
 			sum / _elm_lang$core$Basics$toFloat(n));
 	}
@@ -37524,11 +37637,11 @@ var _user$project$Main$wrapperStyles = {
 };
 var _user$project$Main$view = function (model) {
 	var content = function () {
-		var _p8 = {ctor: '_Tuple2', _0: model.state, _1: model.error};
+		var _p10 = {ctor: '_Tuple2', _0: model.state, _1: model.error};
 		_v3_2:
 		do {
-			if (_p8.ctor === '_Tuple2') {
-				if (_p8._0.ctor === 'Loading') {
+			if (_p10.ctor === '_Tuple2') {
+				if (_p10._0.ctor === 'Loading') {
 					return {
 						ctor: '::',
 						_0: A2(
@@ -37542,10 +37655,10 @@ var _user$project$Main$view = function (model) {
 						_1: {ctor: '[]'}
 					};
 				} else {
-					if (_p8._1.ctor === 'Just') {
+					if (_p10._1.ctor === 'Just') {
 						return {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p8._1._0),
+							_0: _elm_lang$html$Html$text(_p10._1._0),
 							_1: {ctor: '[]'}
 						};
 					} else {
@@ -37561,24 +37674,120 @@ var _user$project$Main$view = function (model) {
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				_elm_lang$core$Maybe$map(
-					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				function (_p11) {
+					var _p12 = _p11;
+					return A2(
+						_elm_lang$core$Maybe$map,
+						function (plot) {
+							return A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$hr,
+										{ctor: '[]'},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(_p12._1),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A3(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, plot),
+											_1: {ctor: '[]'}
+										}
+									}
+								});
+						},
+						_p12._0);
+				},
 				model.otherScenegraphs));
 		var birdStrikePlots = A2(
 			_elm_lang$core$List$filterMap,
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				_elm_lang$core$Maybe$map(
-					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				function (_p13) {
+					var _p14 = _p13;
+					return A2(
+						_elm_lang$core$Maybe$map,
+						function (plot) {
+							return A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$hr,
+										{ctor: '[]'},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(_p14._1),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A3(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, plot),
+											_1: {ctor: '[]'}
+										}
+									}
+								});
+						},
+						_p14._0);
+				},
 				model.birdstrikesScenegraphs));
 		var carPlots = A2(
 			_elm_lang$core$List$filterMap,
 			_elm_lang$core$Basics$identity,
 			A2(
 				_elm_lang$core$List$map,
-				_elm_lang$core$Maybe$map(
-					A2(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)),
+				function (_p15) {
+					var _p16 = _p15;
+					return A2(
+						_elm_lang$core$Maybe$map,
+						function (plot) {
+							return A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$hr,
+										{ctor: '[]'},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(_p16._1),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A3(_enetsee$facet_render_svg_alpha$Facet_Render_Svg$render, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, plot),
+											_1: {ctor: '[]'}
+										}
+									}
+								});
+						},
+						_p16._0);
+				},
 				model.carScenegraphs));
 		return {
 			ctor: '::',
@@ -37692,13 +37901,13 @@ var _user$project$Main$VectorFieldData = F4(
 	});
 var _user$project$Main$vectorFromPos = F2(
 	function (xIn, yIn) {
-		var _p9 = {
+		var _p17 = {
 			ctor: '_Tuple2',
 			_0: _elm_lang$core$Basics$toFloat(0 - yIn),
 			_1: _elm_lang$core$Basics$toFloat(xIn)
 		};
-		var x = _p9._0;
-		var y = _p9._1;
+		var x = _p17._0;
+		var y = _p17._1;
 		var magnitude = _elm_lang$core$Basics$sqrt((x * x) + (y * y));
 		var direction = _user$project$Main$norm(
 			A2(_elm_lang$core$Basics$atan2, 0 - y, x));
@@ -37718,8 +37927,8 @@ var _user$project$Main$vectorFieldData = A2(
 var _user$project$Main$Loaded = {ctor: 'Loaded'};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p10 = msg;
-		if (_p10._0.ctor === 'Err') {
+		var _p18 = msg;
+		if (_p18._0.ctor === 'Err') {
 			return {
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
@@ -37727,49 +37936,105 @@ var _user$project$Main$update = F2(
 					{
 						state: _user$project$Main$Loaded,
 						error: _elm_lang$core$Maybe$Just(
-							_elm_lang$core$Basics$toString(_p10._0._0))
+							_elm_lang$core$Basics$toString(_p18._0._0))
 					}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		} else {
-			var _p12 = _p10._0._0._0;
-			var _p11 = _p10._0._0._1;
+			var _p20 = _p18._0._0._0;
+			var _p19 = _p18._0._0._1;
 			var otherScenegraphs = {
 				ctor: '::',
-				_0: A2(_user$project$Main$compileWith, _user$project$Main$vectorFieldData, _user$project$Main$vectorFieldPlot),
+				_0: {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$Main$compileWith, _user$project$Main$vectorFieldData, _user$project$Main$vectorFieldPlot),
+					_1: 'A symbol plot using the built-in arrow shape to represent a vector field. Note that all legends are generated from the plot declaration automatically.'
+				},
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Main$compileWith, _user$project$Main$trailData, _user$project$Main$trailPlot),
+					_0: {
+						ctor: '_Tuple2',
+						_0: A2(_user$project$Main$compileWith, _user$project$Main$trailData, _user$project$Main$trailPlot),
+						_1: 'A trail plot doing nothing particularly interesting.'
+					},
 					_1: {
 						ctor: '::',
-						_0: A2(_user$project$Main$compileWith, _user$project$Main$lineData, _user$project$Main$linePlot),
-						_1: {ctor: '[]'}
+						_0: {
+							ctor: '_Tuple2',
+							_0: A2(_user$project$Main$compileWith, _user$project$Main$lineData, _user$project$Main$linePlot),
+							_1: 'A line plot showing the different interpolation methods applied to the sin function.'
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: A2(_user$project$Main$compileWith, _user$project$Main$areaData, _user$project$Main$areaBeginNew),
+								_1: 'An area plot showing the `BeginNew` behaviour when missing data (encoded as `Maybe`) is encountered .'
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: A2(_user$project$Main$compileWith, _user$project$Main$areaData, _user$project$Main$areaSkipMissing),
+									_1: 'The same area plot showing the `SkipMissing` behaviour when missing data (encoded as `Maybe`) is encountered .'
+								},
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			};
 			var birdstrikesScenegraphs = {
 				ctor: '::',
-				_0: A2(_user$project$Main$compileWith, _p11, _user$project$Main$birdBarPlot),
+				_0: {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$Main$compileWith, _p19, _user$project$Main$birdBarPlot),
+					_1: 'A bar plot with a square root scale to show skewed data.'
+				},
 				_1: {ctor: '[]'}
 			};
 			var carScenegraphs = {
 				ctor: '::',
-				_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$scatterPlot),
+				_0: {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlot),
+					_1: 'A simple scatter plot'
+				},
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$scatterPlotReversed),
+					_0: {
+						ctor: '_Tuple2',
+						_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlotReversed),
+						_1: 'The same plot with the axes oriented on the top and left.'
+					},
 					_1: {
 						ctor: '::',
-						_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$scatterPlotFacetted),
+						_0: {
+							ctor: '_Tuple2',
+							_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$scatterPlotFacetted),
+							_1: 'The same plot faceted by origin and number of cylenders.'
+						},
 						_1: {
 							ctor: '::',
-							_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$barPlot),
+							_0: {
+								ctor: '_Tuple2',
+								_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlot),
+								_1: 'A bar plot using an `AggregateField` to find the average miles per gallon.'
+							},
 							_1: {
 								ctor: '::',
-								_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$barPlotRow),
+								_0: {
+									ctor: '_Tuple2',
+									_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotRow),
+									_1: 'The same bar plot faceted as a row.'
+								},
 								_1: {
 									ctor: '::',
-									_0: A2(_user$project$Main$compileWith, _p12, _user$project$Main$barPlotColumn),
+									_0: {
+										ctor: '_Tuple2',
+										_0: A2(_user$project$Main$compileWith, _p20, _user$project$Main$barPlotColumn),
+										_1: 'The same bar plot again now faceted as a column.'
+									},
 									_1: {ctor: '[]'}
 								}
 							}
@@ -37781,7 +38046,7 @@ var _user$project$Main$update = F2(
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
 					model,
-					{state: _user$project$Main$Loaded, cars: _p12, birdstrikes: _p11, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
+					{state: _user$project$Main$Loaded, cars: _p20, birdstrikes: _p19, error: _elm_lang$core$Maybe$Nothing, carScenegraphs: carScenegraphs, birdstrikesScenegraphs: birdstrikesScenegraphs, otherScenegraphs: otherScenegraphs}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		}
@@ -37807,7 +38072,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 			_1: A2(_elm_lang$core$Task$attempt, _user$project$Main$LoadData, _user$project$Main$loadData)
 		},
 		update: _user$project$Main$update,
-		subscriptions: function (_p13) {
+		subscriptions: function (_p21) {
 			return _elm_lang$core$Platform_Sub$none;
 		},
 		view: _user$project$Main$view
