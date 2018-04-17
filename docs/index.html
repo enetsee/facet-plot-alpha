@@ -37290,6 +37290,13 @@ var _user$project$Main$vectorFieldPlot = A2(
 						_elm_lang$core$Maybe$Just('x')),
 					_user$project$Facet_Plot$plot(
 						_elm_lang$core$Maybe$Just('A portion of the vector field for F(-y,x)')))))));
+var _user$project$Main$twoDecimalPlaces = function (number) {
+	return A3(
+		_elm_lang$core$String$slice,
+		0,
+		5,
+		_elm_lang$core$Basics$toString(number));
+};
 var _user$project$Main$formatMoney = function (value) {
 	var pow = _elm_lang$core$Basics$floor(
 		A2(_elm_lang$core$Basics$logBase, 10, value));
@@ -37301,31 +37308,27 @@ var _user$project$Main$formatMoney = function (value) {
 		'$',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$round(value / 1000)),
+			_user$project$Main$twoDecimalPlaces(value / 1000),
 			'k')) : ((_elm_lang$core$Native_Utils.cmp(pow, 9) < 0) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'$',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$round(value / 1000000)),
+			_user$project$Main$twoDecimalPlaces(value / 1000000),
 			'mn')) : ((_elm_lang$core$Native_Utils.cmp(pow, 12) < 0) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'$',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$round(
-					value / Math.pow(10, 9))),
+			_user$project$Main$twoDecimalPlaces(
+				value / Math.pow(10, 9)),
 			'bn')) : A2(
 		_elm_lang$core$Basics_ops['++'],
 		'$',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(
-				_elm_lang$core$Basics$round(
-					value / Math.pow(10, 12))),
+			_user$project$Main$twoDecimalPlaces(
+				value / Math.pow(10, 12)),
 			'tn')))));
 };
 var _user$project$Main$truncateString = F2(

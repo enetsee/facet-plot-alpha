@@ -366,13 +366,19 @@ formatMoney value =
         if pow < 3 then
             "$" ++ toString value
         else if pow < 6 then
-            "$" ++ toString (round (value / 1000)) ++ "k"
+            "$" ++ (twoDecimalPlaces (value / 1000)) ++ "k"
         else if pow < 9 then
-            "$" ++ toString (round (value / 1000000)) ++ "mn"
+            "$" ++ (twoDecimalPlaces (value / 1000000)) ++ "mn"
         else if pow < 12 then
-            "$" ++ toString (round (value / 10 ^ 9)) ++ "bn"
+            "$" ++ (twoDecimalPlaces (value / 10 ^ 9)) ++ "bn"
         else
-            "$" ++ toString (round (value / 10 ^ 12)) ++ "tn"
+            "$" ++ (twoDecimalPlaces (value / 10 ^ 12)) ++ "tn"
+
+
+twoDecimalPlaces : a -> String
+twoDecimalPlaces number =
+    toString number
+        |> String.slice 0 5
 
 
 
