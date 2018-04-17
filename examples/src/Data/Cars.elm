@@ -10,7 +10,7 @@ import Task exposing (Task)
 cars : () -> Task Http.Error (List Car)
 cars () =
     Http.get
-        "https://github.com/enetsee/facet-plot-alpha/examples/data/cars.json"
+        "https://vega.github.io/polestar/data/cars.json"
         (Decode.list decode)
         |> Http.toTask
 
