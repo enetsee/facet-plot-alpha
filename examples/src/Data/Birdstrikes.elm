@@ -29,7 +29,7 @@ type alias Birdstrike =
 birdstrikes : () -> Task Http.Error (List Birdstrike)
 birdstrikes () =
     Http.get
-        "/data/birdstrikes.json"
+        "https://gihub.com/enetsee/facet-plot-alpha/examples/data/birdstrikes.json"
         (Decode.list decode)
         |> Http.toTask
 
