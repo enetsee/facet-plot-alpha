@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "summary": "A plotting library inspired by the _Grammar of Graphics_.",
     "repository": "https://github.com/enetsee/facet-plot-alpha.git",
     "license": "MIT",
@@ -17,9 +17,9 @@
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
-        "enetsee/facet-scenegraph-alpha": "1.0.0 <= v < 2.0.0",
-        "enetsee/facet-theme-alpha":"1.0.0 <= v < 2.0.0",
         "enetsee/elm-scale": "1.0.8 <= v < 2.0.0",
+        "enetsee/facet-scenegraph-alpha": "1.0.0 <= v < 2.0.0",
+        "enetsee/facet-theme-alpha": "1.0.0 <= v < 2.0.0",
         "folkertdev/svg-path-lowlevel": "2.0.0 <= v < 3.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
