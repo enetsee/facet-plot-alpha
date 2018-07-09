@@ -88,11 +88,13 @@ positional field =
 
 {-| -}
 positionalCompareWith :
-    (domain -> domain -> Order)
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , field : Field data domain
+    }
     -> PositionalChannel data domain
-positionalCompareWith customCompare field =
-    Channel.positionalCompareWith customCompare field
+positionalCompareWith { compareWith, field } =
+    Channel.positionalCompareWith compareWith field
 
 
 {-| -}
@@ -102,22 +104,26 @@ type alias ChannelWithLegend data range =
 
 {-| -}
 channelCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain range
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain range
+        , field : Field data domain
+    }
     -> ChannelWithLegend data range
-channelCompareWith compareWith formatDomain scale field =
+channelCompareWith { compareWith, formatDomain, scale, field } =
     Channel.channelCompareWith compareWith formatDomain scale field
 
 
 {-| -}
 channel :
-    (comparableDomain -> String)
-    -> Scale comparableDomain range
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain range
+        , field : Field data comparableDomain
+    }
     -> ChannelWithLegend data range
-channel formatDomain scale field =
+channel { formatDomain, scale, field } =
     Channel.channel formatDomain scale field
 
 
@@ -129,22 +135,26 @@ type alias AngleChannel data =
 
 {-| -}
 angle :
-    (comparableDomain -> String)
-    -> Scale comparableDomain Float
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain Float
+        , field : Field data comparableDomain
+    }
     -> AngleChannel data
-angle formatDomain scale field =
+angle { formatDomain, scale, field } =
     Channel.angle formatDomain scale field
 
 
 {-| -}
 angleCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain Float
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain Float
+        , field : Field data domain
+    }
     -> AngleChannel data
-angleCompareWith compareWith formatDomain scale field =
+angleCompareWith { compareWith, formatDomain, scale, field } =
     Channel.angleCompareWith compareWith formatDomain scale field
 
 
@@ -157,22 +167,26 @@ type alias ColorChannel data =
 
 {-| -}
 color :
-    (comparableDomain -> String)
-    -> Scale comparableDomain Color
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain Color
+        , field : Field data comparableDomain
+    }
     -> ColorChannel data
-color formatDomain scale field =
+color { formatDomain, scale, field } =
     Channel.color formatDomain scale field
 
 
 {-| -}
 colorCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain Color
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain Color
+        , field : Field data domain
+    }
     -> ColorChannel data
-colorCompareWith compareWith formatDomain scale field =
+colorCompareWith { compareWith, formatDomain, scale, field } =
     Channel.colorCompareWith compareWith formatDomain scale field
 
 
@@ -185,22 +199,26 @@ type alias FloatChannel data =
 
 {-| -}
 float :
-    (comparableDomain -> String)
-    -> Scale comparableDomain Float
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain Float
+        , field : Field data comparableDomain
+    }
     -> FloatChannel data
-float formatDomain scale field =
+float { formatDomain, scale, field } =
     Channel.float formatDomain scale field
 
 
 {-| -}
 floatCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain Float
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain Float
+        , field : Field data domain
+    }
     -> FloatChannel data
-floatCompareWith compareWith formatDomain scale field =
+floatCompareWith { compareWith, formatDomain, scale, field } =
     Channel.floatCompareWith compareWith formatDomain scale field
 
 
@@ -213,22 +231,26 @@ type alias IntChannel data =
 
 {-| -}
 int :
-    (comparableDomain -> String)
-    -> Scale comparableDomain Int
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain Int
+        , field : Field data comparableDomain
+    }
     -> IntChannel data
-int formatDomain scale field =
+int { formatDomain, scale, field } =
     Channel.int formatDomain scale field
 
 
 {-| -}
 intCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain Int
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain Int
+        , field : Field data domain
+    }
     -> IntChannel data
-intCompareWith compareWith formatDomain scale field =
+intCompareWith { compareWith, formatDomain, scale, field } =
     Channel.intCompareWith compareWith formatDomain scale field
 
 
@@ -241,22 +263,26 @@ type alias ShapeChannel data =
 
 {-| -}
 shape :
-    (comparableDomain -> String)
-    -> Scale comparableDomain Shape
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain Shape
+        , field : Field data comparableDomain
+    }
     -> ShapeChannel data
-shape formatDomain scale field =
+shape { formatDomain, scale, field } =
     Channel.shape formatDomain scale field
 
 
 {-| -}
 shapeCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain Shape
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain Shape
+        , field : Field data domain
+    }
     -> ShapeChannel data
-shapeCompareWith compareWith formatDomain scale field =
+shapeCompareWith { compareWith, formatDomain, scale, field } =
     Channel.shapeCompareWith compareWith formatDomain scale field
 
 
@@ -269,22 +295,26 @@ type alias StrokeDashChannel data =
 
 {-| -}
 strokeDash :
-    (comparableDomain -> String)
-    -> Scale comparableDomain StrokeDash
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain StrokeDash
+        , field : Field data comparableDomain
+    }
     -> StrokeDashChannel data
-strokeDash formatDomain scale field =
+strokeDash { formatDomain, scale, field } =
     Channel.strokeDash formatDomain scale field
 
 
 {-| -}
 strokeDashCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain StrokeDash
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain StrokeDash
+        , field : Field data domain
+    }
     -> StrokeDashChannel data
-strokeDashCompareWith compareWith formatDomain scale field =
+strokeDashCompareWith { compareWith, formatDomain, scale, field } =
     Channel.strokeDashCompareWith compareWith formatDomain scale field
 
 
@@ -297,20 +327,24 @@ type alias TextChannel data =
 
 {-| -}
 text :
-    (comparableDomain -> String)
-    -> Scale comparableDomain String
-    -> Field data comparableDomain
+    { a
+        | formatDomain : comparableDomain -> String
+        , scale : Scale comparableDomain String
+        , field : Field data comparableDomain
+    }
     -> TextChannel data
-text formatDomain scale field =
+text { formatDomain, scale, field } =
     Channel.text formatDomain scale field
 
 
 {-| -}
 textCompareWith :
-    (domain -> domain -> Order)
-    -> (domain -> String)
-    -> Scale domain String
-    -> Field data domain
+    { a
+        | compareWith : domain -> domain -> Order
+        , formatDomain : domain -> String
+        , scale : Scale domain String
+        , field : Field data domain
+    }
     -> TextChannel data
-textCompareWith compareWith formatDomain scale field =
+textCompareWith { compareWith, formatDomain, scale, field } =
     Channel.textCompareWith compareWith formatDomain scale field

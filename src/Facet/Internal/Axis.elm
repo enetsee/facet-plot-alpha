@@ -86,9 +86,7 @@ type alias OrdinalAxisInternal domain =
 type alias AxisInternal a domain =
     { a
         | title : Maybe String
-        , formatDomain :
-            domain -> String
-            -- , orient : Orientation
+        , formatDomain : domain -> String
         , labelAngle : Maybe Float
     }
 
@@ -236,52 +234,52 @@ discreteY title scale =
 
 bandX : Maybe String -> Axis Vertical comparableDomain
 bandX title =
-    discreteX title Scale.band
+    discreteX title (\d r -> Scale.band { domain = d, range = r })
 
 
 customBandX : Maybe String -> Axis Vertical anyDomain
 customBandX title =
-    discreteX title Scale.customBand
+    discreteX title (\d r -> Scale.customBand { domain = d, range = r })
 
 
 bandY : Maybe String -> Axis Horizontal comparableDomain
 bandY title =
-    discreteY title Scale.band
+    discreteY title (\d r -> Scale.band { domain = d, range = r })
 
 
 customBandY : Maybe String -> Axis Horizontal anyDomain
 customBandY title =
-    discreteY title Scale.customBand
+    discreteY title (\d r -> Scale.customBand { domain = d, range = r })
 
 
 linearX : Maybe String -> Axis Vertical Float
 linearX title =
-    continuousX title Scale.linear
+    continuousX title (\d r -> Scale.linear { domain = d, range = r })
 
 
 linearY : Maybe String -> Axis Horizontal Float
 linearY title =
-    continuousY title Scale.linear
+    continuousY title (\d r -> Scale.linear { domain = d, range = r })
 
 
 log10X : Maybe String -> Axis Vertical Float
 log10X title =
-    continuousX title Scale.log10
+    continuousX title (\d r -> Scale.log10 { domain = d, range = r })
 
 
 log10Y : Maybe String -> Axis Horizontal Float
 log10Y title =
-    continuousY title Scale.log10
+    continuousY title (\d r -> Scale.log10 { domain = d, range = r })
 
 
 sqrtX : Maybe String -> Axis Vertical Float
 sqrtX title =
-    continuousX title Scale.sqrt
+    continuousX title (\d r -> Scale.sqrt { domain = d, range = r })
 
 
 sqrtY : Maybe String -> Axis Horizontal Float
 sqrtY title =
-    continuousY title Scale.sqrt
+    continuousY title (\d r -> Scale.sqrt { domain = d, range = r })
 
 
 

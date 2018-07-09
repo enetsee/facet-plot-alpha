@@ -314,13 +314,15 @@ type alias Encoding data xdomain ydomain =
 {-| Circular arc.
 -}
 arc :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> FloatChannel data
-    -> FloatChannel data
-    -> FloatChannel data
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , startAngle : FloatChannel data
+        , endAngle : FloatChannel data
+        , outerRadius : FloatChannel data
+    }
     -> Encoding data xdomain ydomain
-arc x y startAngle endAngle outerRadius =
+arc { x, y, startAngle, endAngle, outerRadius } =
     Encoding.arc x y startAngle endAngle outerRadius
 
 
@@ -348,24 +350,28 @@ padAngle channel encoding =
 
 {-| -}
 vArea :
-    PositionalChannel data xdomain
-    -> PositionalChannel data number
-    -> Interpolate
-    -> Behaviour
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data number
+        , interpolate : Interpolate
+        , onMissing : Behaviour
+    }
     -> Encoding data xdomain number
-vArea xs ys interpolate behaviour =
-    Encoding.vArea xs ys interpolate behaviour
+vArea { x, y, interpolate, onMissing } =
+    Encoding.vArea x y interpolate onMissing
 
 
 {-| -}
 hArea :
-    PositionalChannel data xdomain
-    -> PositionalChannel data number
-    -> Interpolate
-    -> Behaviour
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data number
+        , interpolate : Interpolate
+        , onMissing : Behaviour
+    }
     -> Encoding data xdomain number
-hArea xs ys interpolate behaviour =
-    Encoding.hArea xs ys interpolate behaviour
+hArea { x, y, interpolate, onMissing } =
+    Encoding.hArea x y interpolate onMissing
 
 
 
@@ -374,13 +380,15 @@ hArea xs ys interpolate behaviour =
 
 {-| -}
 line :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> Interpolate
-    -> Behaviour
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , interpolate : Interpolate
+        , onMissing : Behaviour
+    }
     -> Encoding data xdomain ydomain
-line xs ys interpolate behaviour =
-    Encoding.line xs ys interpolate behaviour
+line { x, y, interpolate, onMissing } =
+    Encoding.line x y interpolate onMissing
 
 
 
@@ -389,13 +397,15 @@ line xs ys interpolate behaviour =
 
 {-| -}
 polygon :
-    PositionalChannel data xdomain
-    -> PositionalChannel data number
-    -> Interpolate
-    -> Behaviour
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data number
+        , interpolate : Interpolate
+        , onMissing : Behaviour
+    }
     -> Encoding data xdomain number
-polygon xs ys interpolate behaviour =
-    Encoding.polygon xs ys interpolate behaviour
+polygon { x, y, interpolate, onMissing } =
+    Encoding.polygon x y interpolate onMissing
 
 
 
@@ -404,22 +414,26 @@ polygon xs ys interpolate behaviour =
 
 {-| -}
 rect :
-    PositionalChannel data xdomain
-    -> PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , x2 : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , y2 : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-rect x x2 y y2 =
+rect { x, x2, y, y2 } =
     Encoding.rect x x2 y y2
 
 
 {-| -}
 bar :
-    PositionalChannel data xdomain
-    -> Float
-    -> PositionalChannel data Float
+    { a
+        | x : PositionalChannel data xdomain
+        , width : Float
+        , height : PositionalChannel data Float
+    }
     -> Encoding data xdomain Float
-bar x width height =
+bar { x, width, height } =
     Encoding.bar x (sqrt width) height
 
 
@@ -429,12 +443,14 @@ bar x width height =
 
 {-| -}
 rule :
-    PositionalChannel data xdomain
-    -> PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , x2 : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , y2 : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-rule x x2 y y2 =
+rule { x, x2, y, y2 } =
     Encoding.rule x x2 y y2
 
 
@@ -444,103 +460,125 @@ rule x x2 y y2 =
 
 {-| -}
 symbol :
-    ShapeChannel data
-    -> PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | shape : ShapeChannel data
+        , x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-symbol shape x y =
+symbol { shape, x, y } =
     Encoding.symbol shape x y
 
 
 {-| -}
 point :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-point x y =
+point { x, y } =
     Encoding.point x y
 
 
 {-| -}
 arrow :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-arrow x y =
+arrow { x, y } =
     Encoding.arrow x y
 
 
 {-| -}
 cross :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-cross x y =
+cross { x, y } =
     Encoding.cross x y
 
 
 {-| -}
 square :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-square x y =
+square { x, y } =
     Encoding.square x y
 
 
 {-| -}
 diamond :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-diamond x y =
+diamond { x, y } =
     Encoding.diamond x y
 
 
 {-| -}
 trangleUp :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-trangleUp x y =
+trangleUp { x, y } =
     Encoding.trangleUp x y
 
 
 {-| -}
 triangleDown :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-triangleDown x y =
+triangleDown { x, y } =
     Encoding.triangleDown x y
 
 
 {-| -}
 triangleLeft :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-triangleLeft x y =
+triangleLeft { x, y } =
     Encoding.triangleLeft x y
 
 
 {-| -}
 triangleRight :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-triangleRight x y =
+triangleRight { x, y } =
     Encoding.triangleRight x y
 
 
 {-| -}
 shape :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> SubPath
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , path : SubPath
+    }
     -> Encoding data xdomain ydomain
-shape x y subpath =
-    Encoding.shape x y subpath
+shape { x, y, path } =
+    Encoding.shape x y path
 
 
 
@@ -549,21 +587,24 @@ shape x y subpath =
 
 {-| -}
 text :
-    TextChannel data
-    -> PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
+    { a
+        | text : TextChannel data
+        , x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+    }
     -> Encoding data xdomain ydomain
-text text x y =
+text { text, x, y } =
     Encoding.text text x y
 
 
 {-| -}
 relativePosition :
-    Float
-    -> Float
+    { dx : Float
+    , dy : Float
+    }
     -> Encoding data xdomain ydomain
     -> Encoding data xdomain ydomain
-relativePosition dx dy encoding =
+relativePosition { dx, dy } encoding =
     Encoding.relativePosition dx dy encoding
 
 
@@ -573,13 +614,15 @@ relativePosition dx dy encoding =
 
 {-| -}
 trail :
-    PositionalChannel data xdomain
-    -> PositionalChannel data ydomain
-    -> FloatChannel data
-    -> Behaviour
+    { a
+        | x : PositionalChannel data xdomain
+        , y : PositionalChannel data ydomain
+        , width : FloatChannel data
+        , onMissing : Behaviour
+    }
     -> Encoding data xdomain ydomain
-trail xs ys widths behaviour =
-    Encoding.trail xs ys widths behaviour
+trail { x, y, width, onMissing } =
+    Encoding.trail x y width onMissing
 
 
 

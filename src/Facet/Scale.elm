@@ -187,8 +187,8 @@ sequential =
 
 
 {-| -}
-linear : ( Float, Float ) -> ( Float, Float ) -> Scale Float Float
-linear domain range =
+linear : { a | domain : ( Float, Float ), range : ( Float, Float ) } -> Scale Float Float
+linear { domain, range } =
     { domain = domain, range = range, outsideDomain = discard }
         -- |> Linear.niceDomain 10
         |>
@@ -197,25 +197,25 @@ linear domain range =
 
 
 {-| -}
-linearNice : Int -> ( Float, Float ) -> ( Float, Float ) -> Scale Float Float
-linearNice n domain range =
+linearNice : { a | numTicks : Int, domain : ( Float, Float ), range : ( Float, Float ) } -> Scale Float Float
+linearNice { numTicks, domain, range } =
     { domain = domain, range = range, outsideDomain = discard }
-        |> Linear.niceDomain n
+        |> Linear.niceDomain numTicks
         |> Linear.linear
         |> Continuous
 
 
 {-| -}
-log10 : ( Float, Float ) -> ( Float, Float ) -> Scale Float Float
-log10 domain range =
+log10 : { a | domain : ( Float, Float ), range : ( Float, Float ) } -> Scale Float Float
+log10 { domain, range } =
     { base = 10.0, domain = domain, range = range, outsideDomain = discard }
         |> Log.log
         |> Continuous
 
 
 {-| -}
-naturalLog : ( Float, Float ) -> ( Float, Float ) -> Scale Float Float
-naturalLog domain range =
+naturalLog : { a | domain : ( Float, Float ), range : ( Float, Float ) } -> Scale Float Float
+naturalLog { domain, range } =
     { base = Basics.e, domain = domain, range = range, outsideDomain = discard }
         |> Log.niceDomain
         |> Log.log
@@ -223,8 +223,8 @@ naturalLog domain range =
 
 
 {-| -}
-sqrt : ( Float, Float ) -> ( Float, Float ) -> Scale Float Float
-sqrt domain range =
+sqrt : { a | domain : ( Float, Float ), range : ( Float, Float ) } -> Scale Float Float
+sqrt { domain, range } =
     { exponent = 0.5, domain = domain, range = range, outsideDomain = discard }
         |> Power.niceDomain 10
         |> Power.power
@@ -236,16 +236,16 @@ sqrt domain range =
 
 
 {-| -}
-customBand : List domain -> ( Float, Float ) -> Scale domain Float
-customBand domain range =
+customBand : { a | domain : List domain, range : ( Float, Float ) } -> Scale domain Float
+customBand { domain, range } =
     { domain = domain, range = range, config = Nothing }
         |> Band.customBand
         |> Ordinal
 
 
 {-| -}
-band : List comparable -> ( Float, Float ) -> Scale comparable Float
-band domain range =
+band : { a | domain : List comparable, range : ( Float, Float ) } -> Scale comparable Float
+band { domain, range } =
     { domain = domain, range = range, config = Nothing }
         |> Band.band
         |> Ordinal
@@ -257,26 +257,25 @@ band domain range =
 
 {-| -}
 rgb :
-    ( Float, Float )
-    -> ( Color, Color )
+    { a | domain : ( Float, Float ), range : ( Color, Color ) }
     -> Scale Float Color
-rgb domain range =
+rgb { domain, range } =
     { domain = domain, range = range, gamma = Nothing, outsideDomain = discard }
         |> RGB.rgb
         |> Sequential
 
 
 {-| -}
-rgbBasis : Bool -> ( Float, Float ) -> List Color -> Scale Float Color
-rgbBasis closed domain range =
+rgbBasis : { a | closed : Bool, domain : ( Float, Float ), range : List Color } -> Scale Float Color
+rgbBasis { closed, domain, range } =
     { domain = domain, range = range, closed = closed, outsideDomain = discard }
         |> RGBBasis.rgbBasis
         |> Sequential
 
 
 {-| -}
-hsl : Bool -> ( Float, Float ) -> ( Color, Color ) -> Scale Float Color
-hsl long domain range =
+hsl : { a | long : Bool, domain : ( Float, Float ), range : ( Color, Color ) } -> Scale Float Color
+hsl { long, domain, range } =
     { domain = domain, range = range, long = long, outsideDomain = discard }
         |> HSL.hsl
         |> Sequential

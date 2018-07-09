@@ -73,10 +73,12 @@ type alias Vertical =
     limit.
 -}
 continuousX :
-    Maybe String
-    -> (( xdomain, xdomain ) -> ( Float, Float ) -> Scale xdomain Float)
+    { r
+        | title : Maybe String
+        , scale : ( xdomain, xdomain ) -> ( Float, Float ) -> Scale xdomain Float
+    }
     -> Axis Vertical xdomain
-continuousX title scale =
+continuousX { title, scale } =
     Axis.continuousX title scale
 
 
@@ -84,10 +86,12 @@ continuousX title scale =
     limit.
 -}
 continuousY :
-    Maybe String
-    -> (( ydomain, ydomain ) -> ( Float, Float ) -> Scale ydomain Float)
+    { r
+        | title : Maybe String
+        , scale : ( ydomain, ydomain ) -> ( Float, Float ) -> Scale ydomain Float
+    }
     -> Axis Horizontal ydomain
-continuousY title scale =
+continuousY { title, scale } =
     Axis.continuousY title scale
 
 
@@ -95,10 +99,12 @@ continuousY title scale =
     in the domain.
 -}
 discreteX :
-    Maybe String
-    -> (List xdomain -> ( Float, Float ) -> Scale xdomain Float)
+    { r
+        | title : Maybe String
+        , scale : List xdomain -> ( Float, Float ) -> Scale xdomain Float
+    }
     -> Axis Vertical xdomain
-discreteX title scale =
+discreteX { title, scale } =
     Axis.discreteX title scale
 
 
@@ -106,10 +112,12 @@ discreteX title scale =
     to construct an ordinal scale
 -}
 discreteY :
-    Maybe String
-    -> (List ydomain -> ( Float, Float ) -> Scale ydomain Float)
+    { r
+        | title : Maybe String
+        , scale : List ydomain -> ( Float, Float ) -> Scale ydomain Float
+    }
     -> Axis Horizontal ydomain
-discreteY title scale =
+discreteY { title, scale } =
     Axis.discreteY title scale
 
 

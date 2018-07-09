@@ -210,11 +210,13 @@ layer encoding (Plot plotSpec) =
     , allowing them to be easily compared.
 -}
 facetGrid :
-    Field data comparableRow
-    -> Field data comparableColumn
+    { r
+        | row : Field data comparableRow
+        , column : Field data comparableColumn
+    }
     -> Plot data xdomain ydomain a b
     -> Plot data xdomain ydomain comparableRow comparableColumn
-facetGrid row column (Plot plotSpec) =
+facetGrid { row, column } (Plot plotSpec) =
     let
         facetRow =
             FacetDetails compare toString row
@@ -230,10 +232,10 @@ facetGrid row column (Plot plotSpec) =
     them to be easily compared.
 -}
 facetRow :
-    Field data comparableRow
+    { r | row : Field data comparableRow }
     -> Plot data xdomain ydomain a b
     -> Plot data xdomain ydomain comparableRow b
-facetRow row (Plot plotSpec) =
+facetRow { row } (Plot plotSpec) =
     let
         facetRow =
             FacetDetails compare toString row
@@ -246,10 +248,10 @@ facetRow row (Plot plotSpec) =
     them to be easily compared.
 -}
 facetColumn :
-    Field data comparableColumn
+    { r | column : Field data comparableColumn }
     -> Plot data xdomain ydomain a b
     -> Plot data xdomain ydomain a comparableColumn
-facetColumn column (Plot plotSpec) =
+facetColumn { column } (Plot plotSpec) =
     let
         facetColumn =
             FacetDetails compare toString column
@@ -262,34 +264,32 @@ facetColumn column (Plot plotSpec) =
     scale and axes, allowing them to be easily compared.
 -}
 facetRowWrap :
-    Field data comparableRow
-    -> Int
+    { r | row : Field data comparableRow, maxPerRow : Int }
     -> Plot data xdomain ydomain a b
     -> Plot data xdomain ydomain comparableRow b
-facetRowWrap row maxRow (Plot plotSpec) =
+facetRowWrap { row, maxPerRow } (Plot plotSpec) =
     let
         facetRow =
             FacetDetails compare toString row
     in
         Plot <|
-            { plotSpec | facet = Just <| Row facetRow (Just maxRow) }
+            { plotSpec | facet = Just <| Row facetRow (Just maxPerRow) }
 
 
 {-| Generate columns of small multiples, with a maximum height, using the same
     scale and axes, allowing them to be easily compared.
 -}
 facetColumnWrap :
-    Field data comparableColumn
-    -> Int
+    { r | column : Field data comparableColumn, maxPerColumn : Int }
     -> Plot data xdomain ydomain a b
     -> Plot data xdomain ydomain a comparableColumn
-facetColumnWrap column maxColumn (Plot plotSpec) =
+facetColumnWrap { column, maxPerColumn } (Plot plotSpec) =
     let
         facetColumn =
             FacetDetails compare toString column
     in
         Plot <|
-            { plotSpec | facet = Just <| Column facetColumn (Just maxColumn) }
+            { plotSpec | facet = Just <| Column facetColumn (Just maxPerColumn) }
 
 
 {-| Specify how the small multiple labels for each column in a row of
