@@ -1,2 +1,5 @@
 elm-stuff
 ./examples/elm-stuff
+./examples/elm.js
+*.js
+*.html
