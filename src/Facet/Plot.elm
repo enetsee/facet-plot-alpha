@@ -409,11 +409,17 @@ compileSimple theme plotSpec data =
                 Top ->
                     theme.plot.facetMargin.top + plotTitleHeight + xAxisTitleHeight + xAxisHeight
 
+        xAxisWithDomain =
+            Maybe.map (addXDomain data plotSpec.layers) plotSpec.xAxis
+
+        yAxisWithDomain =
+            Maybe.map (addYDomain data plotSpec.layers) plotSpec.yAxis
+
         xAxis { panelWidth, panelHeight } xScale _ _ =
-            Maybe.map (AxisInternal.scenegraphVertical theme.plot.xAxis panelWidth panelHeight xScale) plotSpec.xAxis
+            Maybe.map (AxisInternal.scenegraphVertical theme.plot.xAxis panelWidth panelHeight xScale) xAxisWithDomain
 
         yAxis { panelWidth, panelHeight } yScale _ _ =
-            Maybe.map (AxisInternal.scenegraphHorizontal theme.plot.yAxis panelWidth panelHeight yScale) plotSpec.yAxis
+            Maybe.map (AxisInternal.scenegraphHorizontal theme.plot.yAxis panelWidth panelHeight yScale) yAxisWithDomain
 
         groupedData =
             [ [ ( Nothing, Nothing, data ) ] ]
@@ -451,13 +457,19 @@ compileGrid theme plotSpec facetRow facetColumn data =
         facetTitleHeight =
             caclulateTitleHeight theme.plot.facetTitle
 
+        xAxisWithDomain =
+            Maybe.map (addXDomain data plotSpec.layers) plotSpec.xAxis
+
+        yAxisWithDomain =
+            Maybe.map (addYDomain data plotSpec.layers) plotSpec.yAxis
+
         {- when to attach an x-axis to a faceted panel -}
         xAxis { panelWidth, panelHeight } xScale =
             let
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphVertical theme.plot.xAxis panelWidth panelHeight xScale)
-                        plotSpec.xAxis
+                        xAxisWithDomain
             in
                 case xAxisOrientation of
                     Bottom ->
@@ -479,7 +491,7 @@ compileGrid theme plotSpec facetRow facetColumn data =
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphHorizontal theme.plot.yAxis panelWidth panelHeight yScale)
-                        plotSpec.yAxis
+                        yAxisWithDomain
             in
                 case yAxisOrientation of
                     Left ->
@@ -599,12 +611,18 @@ compileRow theme plotSpec facetRow maybeLimit data =
         totalFacetTitleHeight =
             (toFloat nRows) * facetTitleHeight
 
+        xAxisWithDomain =
+            Maybe.map (addXDomain data plotSpec.layers) plotSpec.xAxis
+
+        yAxisWithDomain =
+            Maybe.map (addYDomain data plotSpec.layers) plotSpec.yAxis
+
         xAxis { panelWidth, panelHeight } xScale =
             let
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphVertical theme.plot.xAxis panelWidth panelHeight xScale)
-                        plotSpec.xAxis
+                        xAxisWithDomain
 
                 shortestRow =
                     groupedData |> List.map List.length |> List.minimum |> Maybe.withDefault 0
@@ -629,7 +647,7 @@ compileRow theme plotSpec facetRow maybeLimit data =
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphHorizontal theme.plot.yAxis panelWidth panelHeight yScale)
-                        plotSpec.yAxis
+                        yAxisWithDomain
 
                 shortestRow =
                     groupedData |> List.map List.length |> List.minimum |> Maybe.withDefault 0
@@ -732,12 +750,18 @@ compileColumn theme plotSpec facetColumn maybeLimit data =
         totalFacetTitleWidth =
             (toFloat nCols) * facetTitleWidth
 
+        xAxisWithDomain =
+            Maybe.map (addXDomain data plotSpec.layers) plotSpec.xAxis
+
+        yAxisWithDomain =
+            Maybe.map (addYDomain data plotSpec.layers) plotSpec.yAxis
+
         xAxis { panelWidth, panelHeight } xScale =
             let
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphVertical theme.plot.xAxis panelWidth panelHeight xScale)
-                        plotSpec.xAxis
+                        xAxisWithDomain
 
                 shortestRow =
                     groupedData |> List.map List.length |> List.minimum |> Maybe.withDefault 0
@@ -762,7 +786,7 @@ compileColumn theme plotSpec facetColumn maybeLimit data =
                 sg =
                     Maybe.map
                         (AxisInternal.scenegraphHorizontal theme.plot.yAxis panelWidth panelHeight yScale)
-                        plotSpec.yAxis
+                        yAxisWithDomain
 
                 shortestRow =
                     groupedData |> List.map List.length |> List.minimum |> Maybe.withDefault 0
@@ -1421,6 +1445,42 @@ caclulateTitleHeight title =
 
 
 -- Axes / Domain extent --------------------------------------------------------
+
+
+addXDomain :
+    List data
+    -> List (Encoding data xdomain ydomain)
+    -> AxisInternal.Axis orientation xdomain
+    -> AxisInternal.Axis orientation xdomain
+addXDomain data layers axis =
+    if AxisInternal.hasDomain axis then
+        axis
+    else if AxisInternal.isContinuous axis then
+        extentXContinuous data layers
+            |> Maybe.map (\domain -> Axis.continuousDomain domain axis)
+            |> Maybe.withDefault axis
+    else
+        extentXDiscrete data layers
+            |> Maybe.map (\domain -> Axis.ordinalDomain domain axis)
+            |> Maybe.withDefault axis
+
+
+addYDomain :
+    List data
+    -> List (Encoding data xdomain ydomain)
+    -> AxisInternal.Axis orientation ydomain
+    -> AxisInternal.Axis orientation ydomain
+addYDomain data layers axis =
+    if AxisInternal.hasDomain axis then
+        axis
+    else if AxisInternal.isContinuous axis then
+        extentYContinuous data layers
+            |> Maybe.map (\domain -> Axis.continuousDomain domain axis)
+            |> Maybe.withDefault axis
+    else
+        extentYDiscrete data layers
+            |> Maybe.map (\domain -> Axis.ordinalDomain domain axis)
+            |> Maybe.withDefault axis
 
 
 {-| Create a scale for use with the x-axis determining the extent of the
