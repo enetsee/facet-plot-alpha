@@ -1208,20 +1208,32 @@ extentContinuous channel data initialDomain =
                 data
 
         aggregateDomain =
-            List.foldl
-                (\datum ( maybeMin, maybeMax ) ->
-                    case Field.summarize field [ datum ] of
-                        Just dom ->
-                            ( Just <| Maybe.maybe dom (minWith compareDomain dom) maybeMin
-                            , Just <| Maybe.maybe dom (maxWith compareDomain dom) maybeMax
-                            )
+            case (Field.summarize field data) of
+                Just dom ->
+                    let
+                        ( maybeMin, maybeMax ) =
+                            scalarDomain
+                    in
+                        ( Just <| Maybe.maybe dom (minWith compareDomain dom) maybeMin
+                        , Just <| Maybe.maybe dom (maxWith compareDomain dom) maybeMax
+                        )
 
-                        _ ->
-                            ( maybeMin, maybeMax )
-                )
-                scalarDomain
-                data
+                _ ->
+                    scalarDomain
 
+        -- List.foldl
+        --     (\datum ( maybeMin, maybeMax ) ->
+        --         case Field.summarize field [ datum ] of
+        --             Just dom ->
+        --                 ( Just <| Maybe.maybe dom (minWith compareDomain dom) maybeMin
+        --                 , Just <| Maybe.maybe dom (maxWith compareDomain dom) maybeMax
+        --                 )
+        --
+        --             _ ->
+        --                 ( maybeMin, maybeMax )
+        --     )
+        --     scalarDomain
+        --     (Field.summarize data)
         vectorDomain =
             List.foldl
                 (\maybeDom ( maybeMin, maybeMax ) ->
