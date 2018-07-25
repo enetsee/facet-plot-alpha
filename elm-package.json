@@ -1,5 +1,5 @@
 {
-    "version": "2.0.1",
+    "version": "2.0.2",
     "summary": "A plotting library inspired by the _Grammar of Graphics_.",
     "repository": "https://github.com/enetsee/facet-plot-alpha.git",
     "license": "MIT",
