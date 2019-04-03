@@ -6,7 +6,8 @@ and [vega](https://vega.github.io/vega/).
 
 The main idea behind the library is that a wide variety of different plots
 can be created by composing a small set of primitive visual marks and that
-data can be encoded as some visual attribute of those marks.
+data can be encoded as some visual attribute of those marks. Some [examples
+created with the library can be found here.](https://enetsee.github.io/facet-plot-alpha/)
 
 Once a plot is declared, it can be 'compiled' with some appropriate data to
 generate a [`Scenegraph`](https://github.com/enetsee/facet-scenegraph-alpha).
